@@ -1,10 +1,14 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
+import CartResource from "./cart-resource";
 
 class Client {
+	headers: any;
+	axios: AxiosInstance;
+	cart: CartResource;
 	/**
 	 * Primary entry point for building a new Client.
 	 */
-	static buildClient(accessKey, url) {
+	static buildClient(accessKey: string, url: string) {
 		if (!accessKey || !url) {
 			throw Error("Shopware Client Requires an accessKey and url");
 		}
@@ -22,19 +26,20 @@ class Client {
 		return client;
 	}
 
-	constructor(axiosInstance, headers) {
+	constructor(axiosInstance: AxiosInstance, headers: any) {
 		this.axios = axiosInstance;
 		this.headers = headers;
 		const ctx = localStorage.getItem("sw-context-token");
 		if (ctx) {
 			this.updateContext(ctx);
 		}
+		this.cart = new CartResource(this);
 	}
 
-	async signIn(email, password) {
+	async signIn(email: string, password: string) {
 		try {
 			console.log(document);
-			const res = await this.axios.post("account/login", {
+			const res = await this.post("account/login", {
 				username: email,
 				password: password,
 			});
@@ -48,35 +53,16 @@ class Client {
 	}
 
 	async signOut() {
-		this.updateContext(null);
+		this.updateContext("");
 	}
 
-	async addToCart(productId) {
-		try {
-			const res = await this.axios.post(
-				"checkout/cart/line-item",
-				{
-					items: [
-						{
-							type: "product",
-							referencedId: productId,
-							quantity: 1,
-						},
-					],
-				},
-				{
-					headers: this.headers,
-				}
-			);
-			console.log("ADDED_TO_CART:", res.data);
-			return res.data;
-		} catch (error) {
-			console.log("USER_API_UPDATE_ERROR:", error);
-			throw error;
-		}
+	async post(endpoint: string, body: any) {
+		return await this.axios.post(endpoint, body, {
+			headers: this.headers,
+		});
 	}
 
-	updateContext(contextToken) {
+	updateContext(contextToken: string) {
 		console.log("UPDATE TOKEN", contextToken);
 		localStorage.setItem("sw-context-token", contextToken);
 		this.headers["sw-context-token"] = contextToken;
