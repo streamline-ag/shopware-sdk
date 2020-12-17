@@ -1,10 +1,14 @@
 import axios, { AxiosInstance } from "axios";
-import CartResource from "./cart-resource";
+import CartResource from "./resources/cart-resource";
+import AccountResource from "./resources/account-resource";
+import ProductResource from "./resources/product-resource";
 
 class Client {
 	headers: any;
 	axios: AxiosInstance;
 	cart: CartResource;
+	account: AccountResource;
+	product: ProductResource;
 	/**
 	 * Primary entry point for building a new Client.
 	 */
@@ -34,6 +38,8 @@ class Client {
 			this.updateContext(ctx);
 		}
 		this.cart = new CartResource(this);
+		this.account = new AccountResource(this);
+		this.product = new ProductResource(this);
 	}
 
 	async signIn(email: string, password: string) {
