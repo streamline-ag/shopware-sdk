@@ -1,11 +1,21 @@
 {
-  "name": "shopware-sdk",
-  "version": "0.0.1",
-  "description": "SDK to create a custom Shopware storefront",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Streamline AG",
-  "license": "ISC"
+	"name": "@streamlineag/shopware-sdk",
+	"version": "0.0.10",
+	"description": "SDK to create a custom Shopware storefront",
+	"main": "dist/index.js",
+	"scripts": {
+		"start": "npx babel src --watch --out-dir dist",
+		"build": "npx babel src --out-dir dist",
+		"prepare": "npm run build"
+	},
+	"author": "Streamline AG",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.21.0"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.12.10",
+		"@babel/core": "^7.12.10",
+		"@babel/preset-env": "^7.12.11"
+	}
 }
