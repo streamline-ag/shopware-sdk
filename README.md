@@ -1,4 +1,4 @@
-#shopware-sdk
+# shopware-sdk
 
 https://docs.shopware.com/en/shopware-platform-dev-en/store-api-guide
 
