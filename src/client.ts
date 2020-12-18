@@ -37,6 +37,10 @@ class Client {
 		if (ctx) {
 			this.updateContext(ctx);
 		}
+		const lang = localStorage.getItem("sw-language-id");
+		if (lang) {
+			this.updateLanguage(lang);
+		}
 		this.cart = new CartResource(this);
 		this.account = new AccountResource(this);
 		this.product = new ProductResource(this);
@@ -50,7 +54,7 @@ class Client {
 				password: password,
 			});
 			this.updateContext(res?.data?.contextToken);
-			console.log("SIGN_IN:", res.data);
+			//console.log("SIGN_IN:", res.data);
 			return res.data;
 		} catch (error) {
 			console.log("FAILED_TO_SIGN_IN:", error);
@@ -66,6 +70,23 @@ class Client {
 		return await this.axios.post(endpoint, body, {
 			headers: this.headers,
 		});
+	}
+	async patch(endpoint: string, body: any) {
+		return await this.axios.patch(endpoint, body, {
+			headers: this.headers,
+		});
+	}
+	async delete(endpoint: string) {
+		return await this.axios.delete(endpoint, {
+			headers: this.headers,
+		});
+	}
+
+	//https://docs.shopware.com/en/shopware-platform-dev-en/admin-api-guide/reading-entities#language-header
+	updateLanguage(languageId: string) {
+		console.log("UPDATE LANGUAGE", languageId);
+		localStorage.setItem("sw-language-id", languageId);
+		this.headers["sw-language-id"] = languageId;
 	}
 
 	updateContext(contextToken: string) {

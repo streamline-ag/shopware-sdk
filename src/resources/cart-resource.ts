@@ -15,7 +15,7 @@ export default class CartResource extends Resource {
 					},
 				],
 			});
-			console.log("ADDED_TO_CART:", res.data);
+			//console.log("ADDED_TO_CART:", res.data);
 			return res.data;
 		} catch (error) {
 			console.log("USER_API_UPDATE_ERROR:", error);
@@ -30,14 +30,14 @@ export default class CartResource extends Resource {
 					order_line_item: ["label", "price"],
 				},
 			});
-			console.log("ORDER_CREATED:", res.data);
+			//console.log("ORDER_CREATED:", res.data);
 			if (res?.data?.id) {
 				const payment = await this.client.post("handle-payment", {
 					orderId: res?.data?.id,
 					finishUrl: "http://localhost:3000/success",
 					errorUrl: "http://localhost:3000/failed",
 				});
-				console.log("HANDLE_PAYMENT", payment.data);
+				//console.log("HANDLE_PAYMENT", payment.data);
 				return { ...res.data, paymentUrl: payment.data?.redirectUrl };
 			}
 			return res.data;
