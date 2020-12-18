@@ -1,5 +1,5 @@
 {
-	"name": "@streamlineag/shopware-sdk",
+	"name": "shopware-sdk",
 	"version": "0.1.0",
 	"description": "SDK to create a custom Shopware storefront",
 	"main": "dist/index.js",
