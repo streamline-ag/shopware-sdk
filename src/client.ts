@@ -35,11 +35,17 @@ class Client {
 	constructor(axiosInstance: AxiosInstance, headers: any) {
 		this.axios = axiosInstance;
 		this.headers = headers;
-		const ctx = localStorage.getItem("sw-context-token");
+		const ctx =
+			typeof window !== "undefined"
+				? localStorage.getItem("sw-context-token")
+				: null;
 		if (ctx) {
 			this.updateContext(ctx);
 		}
-		const lang = localStorage.getItem("sw-language-id");
+		const lang =
+			typeof window !== "undefined"
+				? localStorage.getItem("sw-language-id")
+				: null;
 		if (lang) {
 			this.updateLanguage(lang);
 		}
@@ -88,13 +94,17 @@ class Client {
 	//https://docs.shopware.com/en/shopware-platform-dev-en/admin-api-guide/reading-entities#language-header
 	updateLanguage(languageId: string) {
 		console.log("UPDATE LANGUAGE", languageId);
-		localStorage.setItem("sw-language-id", languageId);
+		if (typeof window !== "undefined") {
+			localStorage.setItem("sw-language-id", languageId);
+		}
 		this.headers["sw-language-id"] = languageId;
 	}
 
 	updateContext(contextToken: string) {
 		console.log("UPDATE TOKEN", contextToken);
-		localStorage.setItem("sw-context-token", contextToken);
+		if (typeof window !== "undefined") {
+			localStorage.setItem("sw-context-token", contextToken);
+		}
 		this.headers["sw-context-token"] = contextToken;
 	}
 }

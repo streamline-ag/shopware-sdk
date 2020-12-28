@@ -15,6 +15,20 @@ export default class ProductResource extends Resource {
 		return [];
 	}
 
+	async getProduct(id: string) {
+		try {
+			if (!id) {
+				throw new Error(`No ID provided: ${id}`);
+			}
+			const res = await this.client.post(`product/${id}`, {});
+			//console.log("GOT_PRODUCTS:", res.data);
+			return res?.data;
+		} catch (error) {
+			console.log("UNABLE_TO_GET_PRODUCT:", error);
+		}
+		return null;
+	}
+
 	async getProductsIncludeFields(fields: String[] = ["id", "name"]) {
 		try {
 			const res = await this.client.post("product", {
