@@ -20,7 +20,16 @@ export default class ProductResource extends Resource {
 			if (!id) {
 				throw new Error(`No ID provided: ${id}`);
 			}
-			const res = await this.client.post(`product/${id}`, {});
+			const res = await this.client.post(`product/${id}`, {
+				associations: {
+					media: {},
+					categories: {
+						associations: {
+							media: {},
+						},
+					},
+				},
+			});
 			//console.log("GOT_PRODUCTS:", res.data);
 			return res?.data;
 		} catch (error) {

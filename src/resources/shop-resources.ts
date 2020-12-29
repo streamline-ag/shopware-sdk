@@ -14,4 +14,40 @@ export default class ShopResource extends Resource {
 			return [];
 		}
 	}
+	async getMainNavigation() {
+		try {
+			const res = await this.client.post(
+				`navigation/main-navigation/main-navigation`,
+				{
+					includes: {
+						category: [
+							"id",
+							"name",
+							"breadcrumb",
+							"media",
+							"products",
+							"seoUrls",
+						],
+						media: ["url"],
+						product: ["id", "name", "seoUrls"],
+						seo_url: ["seoPathInfo"],
+					},
+
+					associations: {
+						products: {
+							associations: {
+								seoUrls: {},
+							},
+						},
+						seoUrls: {},
+					},
+				}
+			);
+			//console.log("GOT_PRODUCTS:", res.data);
+			return res?.data;
+		} catch (error) {
+			console.log("UNABLE_TO_GET_NAV:", error);
+		}
+		return [];
+	}
 }
