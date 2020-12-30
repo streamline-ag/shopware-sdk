@@ -3,6 +3,7 @@ import CartResource from "./resources/cart-resource";
 import AccountResource from "./resources/account-resource";
 import ProductResource from "./resources/product-resource";
 import ShopResource from "./resources/shop-resources";
+import { API_ENDPOINT, CMS_ENDPOINT } from "./const";
 
 class Client {
 	headers: any;
@@ -58,7 +59,7 @@ class Client {
 	async signIn(email: string, password: string) {
 		try {
 			console.log(document);
-			const res = await this.post("account/login", {
+			const res = await this.post(API_ENDPOINT + "account/login", {
 				username: email,
 				password: password,
 			});
@@ -75,18 +76,29 @@ class Client {
 		this.updateContext("");
 	}
 
+	async get(endpoint: string) {
+		return await this.axios.get(API_ENDPOINT + endpoint, {
+			headers: this.headers,
+		});
+	}
 	async post(endpoint: string, body: any) {
-		return await this.axios.post(endpoint, body, {
+		return await this.axios.post(API_ENDPOINT + endpoint, body, {
 			headers: this.headers,
 		});
 	}
 	async patch(endpoint: string, body: any) {
-		return await this.axios.patch(endpoint, body, {
+		return await this.axios.patch(API_ENDPOINT + endpoint, body, {
 			headers: this.headers,
 		});
 	}
 	async delete(endpoint: string) {
-		return await this.axios.delete(endpoint, {
+		return await this.axios.delete(API_ENDPOINT + endpoint, {
+			headers: this.headers,
+		});
+	}
+
+	async getFromCMSEndpoint(endpoint: string) {
+		return await this.axios.get(CMS_ENDPOINT + endpoint, {
 			headers: this.headers,
 		});
 	}

@@ -4,6 +4,15 @@ import Resource from "./resource";
  * @class
  */
 export default class CartResource extends Resource {
+	async getCurrentCart() {
+		try {
+			const res = await this.client.get("checkout/cart");
+			return res.data;
+		} catch (error) {
+			console.log("GET_CURRENT_CART_ERROR:", error);
+		}
+		return {};
+	}
 	async addProduct(productId: string) {
 		try {
 			const res = await this.client.post("checkout/cart/line-item", {
@@ -18,7 +27,7 @@ export default class CartResource extends Resource {
 			//console.log("ADDED_TO_CART:", res.data);
 			return res.data;
 		} catch (error) {
-			console.log("USER_API_UPDATE_ERROR:", error);
+			console.log("ADD_TO_CART_ERROR:", error);
 		}
 		return {};
 	}

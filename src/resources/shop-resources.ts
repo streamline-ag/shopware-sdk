@@ -50,4 +50,37 @@ export default class ShopResource extends Resource {
 		}
 		return [];
 	}
+
+	async getFooterNavigation() {
+		try {
+			const res = await this.client.post(
+				`navigation/footer-navigation/footer-navigation`,
+				{
+					includes: {
+						category: ["cmsPage"],
+						cms_page: ["id", "name"],
+					},
+					associations: {
+						cmsPage: {},
+					},
+				}
+			);
+			//console.log("GOT_PRODUCTS:", res.data);
+			return res?.data;
+		} catch (error) {
+			console.log("UNABLE_TO_GET_FOOTER_NAV:", error);
+		}
+		return [];
+	}
+
+	async getCMSPage(id: string) {
+		try {
+			const res = await this.client.getFromCMSEndpoint(`${id}`);
+			//console.log("GOT_PRODUCTS:", res.data);
+			return res?.data;
+		} catch (error) {
+			console.log("UNABLE_TO_GET_CMS_PAGE:", error);
+		}
+		return "";
+	}
 }
