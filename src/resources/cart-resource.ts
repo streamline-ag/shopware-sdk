@@ -13,14 +13,14 @@ export default class CartResource extends Resource {
 		}
 		return {};
 	}
-	async addProduct(productId: string) {
+	async addProduct(productId: string, amount: Number) {
 		try {
 			const res = await this.client.post("checkout/cart/line-item", {
 				items: [
 					{
 						type: "product",
 						referencedId: productId,
-						quantity: 1,
+						quantity: amount > 0 ? amount : 1,
 					},
 				],
 			});
