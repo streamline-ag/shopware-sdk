@@ -7,6 +7,9 @@ export default class CartResource extends Resource {
 	async getCurrentCart() {
 		try {
 			const res = await this.client.get("checkout/cart");
+			if (res?.data?.token) {
+				this.client.updateContext(res?.data?.token);
+			}
 			return res.data;
 		} catch (error) {
 			console.log("GET_CURRENT_CART_ERROR:", error);
@@ -28,6 +31,36 @@ export default class CartResource extends Resource {
 			return res.data;
 		} catch (error) {
 			console.log("ADD_TO_CART_ERROR:", error);
+		}
+		return {};
+	}
+	async removeItem(lineId: string) {
+		try {
+			const res = await this.client.delete("checkout/cart/line-item", {
+				ids: [lineId],
+			});
+			//console.log("ADDED_TO_CART:", res.data);
+			return res.data;
+		} catch (error) {
+			console.log("REMOVE_FROM_CART_ERROR:", error);
+		}
+		return {};
+	}
+	async updateItem(id: string, amount: Number, productId: string) {
+		try {
+			const res = await this.client.patch("checkout/cart/line-item", {
+				items: [
+					{
+						id,
+						quantity: amount,
+						referencedId: productId,
+					},
+				],
+			});
+			//console.log("ADDED_TO_CART:", res.data);
+			return res.data;
+		} catch (error) {
+			console.log("REMOVE_FROM_CART_ERROR:", error);
 		}
 		return {};
 	}
@@ -54,5 +87,14 @@ export default class CartResource extends Resource {
 			console.log("FAILED_TO_CREATE_ORDER:", error);
 		}
 		return {};
+	}
+	async getPaymentMethods() {
+		try {
+			const res = await this.client.post("payment-method", {});
+			return res.data;
+		} catch (error) {
+			console.log("GET_PAYMENT_METHODS_ERROR:", error);
+		}
+		return [];
 	}
 }

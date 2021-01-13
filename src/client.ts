@@ -91,9 +91,10 @@ class Client {
 			headers: this.headers,
 		});
 	}
-	async delete(endpoint: string) {
+	async delete(endpoint: string, body: any = {}) {
 		return await this.axios.delete(API_ENDPOINT + endpoint, {
 			headers: this.headers,
+			data: body,
 		});
 	}
 
