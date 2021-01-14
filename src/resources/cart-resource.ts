@@ -97,4 +97,17 @@ export default class CartResource extends Resource {
 		}
 		return [];
 	}
+	async getShippingMethods() {
+		try {
+			const res = await this.client.post("shipping-method", {
+				associations: {
+					prices: {},
+				},
+			});
+			return res.data;
+		} catch (error) {
+			console.log("GET_SHIPPING_METHODS_ERROR:", error);
+		}
+		return [];
+	}
 }
