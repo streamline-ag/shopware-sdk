@@ -7,10 +7,30 @@ export default class ShopResource extends Resource {
 	async getLanguages() {
 		try {
 			const res = await this.client.post("language", {});
-			console.log("GOT_LANGUAGES:", res?.data);
+			//console.log("GOT_LANGUAGES:", res?.data);
 			return res?.data;
 		} catch (error) {
-			console.log("UNABLE_TO_GET_CUSTOMER:", error);
+			console.log("UNABLE_TO_GET_LANGUAGES:", error);
+			return [];
+		}
+	}
+	async getSalutations() {
+		try {
+			const res = await this.client.post("salutation", {});
+			//console.log("GOT_SALUTATIONS:", res?.data);
+			return res?.data;
+		} catch (error) {
+			console.log("UNABLE_TO_GET_SALUTATIONS:", error);
+			return [];
+		}
+	}
+	async getCountries() {
+		try {
+			const res = await this.client.post("country", {});
+			//console.log("GOT_COUNTRIES:", res?.data);
+			return res?.data?.elements;
+		} catch (error) {
+			console.log("UNABLE_TO_GET_COUNTRIES:", error);
 			return [];
 		}
 	}

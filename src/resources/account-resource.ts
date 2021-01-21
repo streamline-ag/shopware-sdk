@@ -18,6 +18,24 @@ interface ChangePasswordProps {
 	newPassword: string;
 	newPasswordConfirm: string;
 }
+interface RegisterProps {
+	guest: Boolean;
+	salutationId: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	affiliateCode?: string;
+	campaignCode?: string;
+	storefrontUrl: string;
+	billingAddress: BillingAddressProps;
+}
+
+interface BillingAddressProps {
+	countryId: string;
+	street: string;
+	zipcode: string;
+	city: string;
+}
 interface AddressProps {
 	id: string;
 	customerId: string;
@@ -47,6 +65,16 @@ export default class AccountResource extends Resource {
 	}
 	changePassword(props: ChangePasswordProps) {
 		throw new Error("Not Implemented");
+	}
+	async register(props: RegisterProps) {
+		try {
+			const res = await this.client.post("account/register", props);
+			console.log("USER_REGISTERED:", res);
+			return res?.data;
+		} catch (error) {
+			console.log("UNABLE_TO_REGISTER:", error);
+			return null;
+		}
 	}
 	async getCurrentCustomer() {
 		try {
