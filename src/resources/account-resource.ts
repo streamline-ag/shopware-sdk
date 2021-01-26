@@ -70,6 +70,12 @@ export default class AccountResource extends Resource {
 		try {
 			const res = await this.client.post("account/register", props);
 			console.log("USER_REGISTERED:", res);
+			const context = res.headers["sw-context-token"];
+			if (context) {
+				this.client.updateContext(context.split(", ")[0]);
+			} else {
+				console.error("No context-token received:", res.headers);
+			}
 			return res?.data;
 		} catch (error) {
 			console.log("UNABLE_TO_REGISTER:", error);
@@ -124,6 +130,19 @@ export default class AccountResource extends Resource {
 			return res?.data;
 		} catch (error) {
 			console.log("UNABLE_TO_GET_ADDRESSES:", error);
+		}
+		return [];
+	}
+	async getOrders(): Promise<Array<any>> {
+		try {
+			const res = await this.client.post("order", {});
+			//console.log("GOT_ADDRESSES:", res?.data);
+			if (res?.data?.orders?.elements) {
+				return res?.data?.orders?.elements;
+			}
+			return [];
+		} catch (error) {
+			console.log("UNABLE_TO_GET_ORDERS:", error);
 		}
 		return [];
 	}

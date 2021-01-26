@@ -72,12 +72,16 @@ export default class CartResource extends Resource {
 					order_line_item: ["label", "price"],
 				},
 			});
+			const origin =
+				typeof window !== "undefined"
+					? window.location.origin
+					: "http://localhost:3000";
 			//console.log("ORDER_CREATED:", res.data);
 			if (res?.data?.id) {
 				const payment = await this.client.post("handle-payment", {
 					orderId: res?.data?.id,
-					finishUrl: "http://localhost:3000/success",
-					errorUrl: "http://localhost:3000/failed",
+					finishUrl: origin + "/checkout/success",
+					errorUrl: origin + "/checkout/failed",
 				});
 				//console.log("HANDLE_PAYMENT", payment.data);
 				return { ...res.data, paymentUrl: payment.data?.redirectUrl };
