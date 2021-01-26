@@ -1,6 +1,6 @@
 {
 	"name": "shopware-sdk",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"description": "SDK to create a custom Shopware storefront",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
