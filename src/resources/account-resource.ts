@@ -137,7 +137,11 @@ export default class AccountResource extends Resource {
 		try {
 			const res = await this.client.post("order", {
 				associations: {
-					lineItems: {},
+					lineItems: {
+						associations: {
+							cover: {},
+						},
+					},
 				},
 			});
 			//console.log("GOT_ADDRESSES:", res?.data);
