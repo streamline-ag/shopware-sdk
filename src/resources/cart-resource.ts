@@ -92,6 +92,28 @@ export default class CartResource extends Resource {
 		}
 		return {};
 	}
+	async payOrder(orderId: string) {
+		try {
+			const origin =
+				typeof window !== "undefined"
+					? window.location.origin
+					: "http://localhost:3000";
+			//console.log("ORDER_CREATED:", res.data);
+			if (orderId) {
+				const payment = await this.client.post("handle-payment", {
+					orderId: orderId,
+					finishUrl: origin + "/checkout/success",
+					errorUrl: origin + "/checkout/failed",
+				});
+				//console.log("HANDLE_PAYMENT", payment.data);
+				return { paymentUrl: payment.data?.redirectUrl };
+			}
+			return null;
+		} catch (error) {
+			console.log("FAILED_TO_CREATE_ORDER:", error);
+		}
+		return null;
+	}
 	async getPaymentMethods() {
 		try {
 			const res = await this.client.post("payment-method", {});

@@ -135,7 +135,11 @@ export default class AccountResource extends Resource {
 	}
 	async getOrders(): Promise<Array<any>> {
 		try {
-			const res = await this.client.post("order", {});
+			const res = await this.client.post("order", {
+				associations: {
+					lineItems: {},
+				},
+			});
 			//console.log("GOT_ADDRESSES:", res?.data);
 			if (res?.data?.orders?.elements) {
 				return res?.data?.orders?.elements;
