@@ -34,6 +34,23 @@ export default class CartResource extends Resource {
 		}
 		return {};
 	}
+	async addPromotion(promotionCode: string) {
+		try {
+			const res = await this.client.post("checkout/cart/line-item", {
+				items: [
+					{
+						type: "promotion",
+						referencedId: promotionCode,
+					},
+				],
+			});
+			//console.log("ADDED_TO_CART:", res.data);
+			return res.data;
+		} catch (error) {
+			console.log("ADD_TO_CART_ERROR:", error);
+		}
+		return {};
+	}
 	async removeItem(lineId: string) {
 		try {
 			const res = await this.client.delete("checkout/cart/line-item", {
